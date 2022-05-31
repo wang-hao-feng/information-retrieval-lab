@@ -3,17 +3,14 @@ import json
 import time
 import queue
 import shutil
-from urllib import response
 import requests
-import urllib3
 import numpy as np
 from tqdm import tqdm
-from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from threading import Lock, Thread
 
 class Crawler():
-    def __init__(self, thread_num=10, prefix='./craw', sleep_time=0, time_out=5) -> None:
+    def __init__(self, thread_num:int=10, prefix:str='./craw', sleep_time:int=0, time_out:int=5) -> None:
         self.thread_num = thread_num
         self.prefix = prefix
         self.__condition_lock = Lock()
@@ -24,9 +21,7 @@ class Crawler():
         self.__bar = [None, None]
         self.__sleep_time = sleep_time
         self.__time_out = time_out
-        self.__http = urllib3.PoolManager()
         
-    
     def run(self) -> None:
         """
         运行爬虫
@@ -208,12 +203,12 @@ class Crawler():
 
         #将网页描述信息存入磁盘
         with open(os.path.join(dir_path, 'page_description.json'), 'w') as file:
-            json.dump(page_description, file)
+            json.dump(page_description, file, ensure_ascii=False)
 
         #返回是否存在附件
         return len(appendixs) > 0
 
-    def __IsLogPage(self, html) -> bool:
+    def __IsLogPage(self, html:str) -> bool:
         """
         根据标题判断当前页是否是登陆页面
         """
@@ -222,7 +217,7 @@ class Crawler():
 
     def __GetDirNameFromURL(self, url:str) -> str:
         """
-        根据url中文章的日期和编号生成文件名
+        根据url中文章的日期和编号生成文件夹名
         """
         idx = url.split('/')[-4:]
         return idx[0] + '_' + idx[1] + '_' + idx[2] + '_' + idx[3]

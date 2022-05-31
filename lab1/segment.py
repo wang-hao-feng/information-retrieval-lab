@@ -54,4 +54,5 @@ if __name__ == '__main__':
     segmentor = Segment(stopwords=['stopwords.txt', 'stopwords(new).txt'])
     segment = segmentor.Segment()
     with open('./preprocess.json', 'w', encoding='utf-8') as file:
-        json.dump(segment[:10], file)
+        for i in range(10):
+            file.write(json.dumps(segment[i], ensure_ascii=False) + '\n')
